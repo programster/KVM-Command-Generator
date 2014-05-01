@@ -144,6 +144,7 @@ function main()
         '--accelerate',
         '--hvm', # kvm does not have paravirt, thats xen only.
         #'--network=bridge:br0', # commenting this out results in using kvms default 192.168.122.1 virbr0 and VM's will not have public IPs
+        '--network network=default,model=virtio',
         '--location='  . $settings['SOURCE_DIR'] . '/' . $settings['ISO_NAME'], # location works on isos as well, but have to use location if want extra args which is needed for instant cli install
         '--extra-args "console=ttyS0 ks=http://pastebin.com/raw.php?i=ddLQtuHz"' # Setting the console allows us to actually see output and answer prompts.
     );
