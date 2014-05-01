@@ -120,7 +120,7 @@ function configureDisk($switches, $vmName)
 
     $diskSize = getInput("How much allocated storage (in GB)?");
     
-    $switches['DISK'] = '--disk ' . $filepath . ',size=' . $diskSize . ',sparse=' . $isSparse;
+    $switches['DISK'] = '--disk ' . $filepath . ',size=' . $diskSize . ',bus=virtio,sparse=' . $isSparse;
 
     return $switches;
 }
