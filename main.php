@@ -131,7 +131,12 @@ function main()
 {
     global $settings;
     
+    # Create the vms installation dir if it doesn't already exist.
+    @mkdir $INSTALLATION_DIR;
+    
     checkInstallationMedia();
+    
+    mkdir 
 
     # initialize the switches with the default settings
     $switches = array(
