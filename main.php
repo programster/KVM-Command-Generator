@@ -135,8 +135,6 @@ function main()
     @mkdir($settings['INSTALLATION_DIR']);
     
     checkInstallationMedia();
-    
-    mkdir 
 
     # initialize the switches with the default settings
     $switches = array(
