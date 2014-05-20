@@ -132,7 +132,7 @@ function main()
     global $settings;
     
     # Create the vms installation dir if it doesn't already exist.
-    @mkdir $INSTALLATION_DIR;
+    @mkdir($settings['INSTALLATION_DIR']);
     
     checkInstallationMedia();
     
