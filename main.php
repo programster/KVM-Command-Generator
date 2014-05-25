@@ -10,9 +10,17 @@
 global $settings;
 
 $settings = array(
-    'SOURCE_DIR'        => dirname(__FILE__) . '/installation_media', # where iso to install from is
-    'INSTALLATION_DIR'  => dirname(__FILE__) . '/vms', # where disk images will be stored
-    'ISO_NAME'          => 'ubuntu-precise-mini.iso'
+    # where iso to install from is
+    'SOURCE_DIR'            => dirname(__FILE__) . '/installation_media',
+
+    # Where we are going to store the guest VMs disk images
+    'INSTALLATION_DIR'      => dirname(__FILE__) . '/vms', 
+
+    # The name we want to give the ubuntu mini iso that we pull. (just so admins know what it is)
+    'ISO_NAME'              => 'ubuntu-precise-mini.iso',
+
+    # where will put generated script user must run as sudo
+    'INSTALL_GUEST_SCRIPT'  => '/tmp/install-guest.sh' 
 );
 
 
@@ -73,8 +81,10 @@ function checkInstallationMedia()
 
     if ($downloadIso)
     {
-        $fetchCommand = 'wget -O ' . $settings['ISO_NAME'] . ' ' .
-                        'http://archive.ubuntu.com/ubuntu/dists/precise-updates/main/installer-amd64/current/images/netboot/mini.iso';
+        $isoLocation = 'http://archive.ubuntu.com/ubuntu/dists/precise-updates/main/' .
+                       'installer-amd64/current/images/netboot/mini.iso';
+
+        $fetchCommand = 'wget -O ' . $settings['ISO_NAME'] . ' ' . $isoLocation;
         
         chdir($settings['SOURCE_DIR']);
         shell_exec($fetchCommand);
@@ -95,32 +105,23 @@ function configureDisk($switches, $vmName)
     $yesNoOptions = array('yes', 'no');
 
     # DISK PARAMS
-
-    $autoManage = getInput("Auto place disk file?", $yesNoOptions);
-
-    if ($autoManage)
-    {
-        $filepath = $settings['INSTALLATION_DIR'] . '/' . $vmName . '.img';
-    }
-    else
-    {
-        $filepath = getInput("Please specify the path to place the file:");
-    }
-
-    $options = array('sparse', 'dedicated');
+    $filepath = $settings['INSTALLATION_DIR'] . '/' . $vmName . '.img';
     
-    if (getInput("Use a sparse or dedicated storage file?", $options)=='sparse')
-    {
-        $isSparse = 'yes';
-    }
-    else
-    {
-        $isSparse = 'no';
-    }
 
     $diskSize = getInput("How much allocated storage (in GB)?");
     
-    $switches['DISK'] = '--disk ' . $filepath . ',size=' . $diskSize . ',bus=virtio,sparse=' . $isSparse;
+    $switches['DISK'] = '--disk ' . $filepath . ',bus=virtio';
+
+    
+    $createDiskCmd = 
+        'qemu-img create ' .
+        '-f qcow2 ' .
+        '-o preallocation=metadata,compat=1.1,lazy_refcounts=on ' .
+        $filepath . ' ' .
+        $diskSize . 'G' . PHP_EOL;
+
+    file_put_contents($settings['INSTALL_GUEST_SCRIPT'], $createDiskCmd);
+    shell_exec($createDiskCmd);
 
     return $switches;
 }
@@ -170,10 +171,15 @@ function main()
     $switchValues = array_values($switches);
 
     $join = ' \\' . PHP_EOL;
-    $command = 'sudo virt-install ' . implode($join, $switchValues);
+    $command = 'virt-install ' . implode($join, $switchValues);
+    
+    
+    # Append to the script because the command to create the disk is already in there.
+    file_put_contents($settings['INSTALL_GUEST_SCRIPT'], $command, FILE_APPEND);
 
-    echo "Please run the following command:" . PHP_EOL .
-         $command . PHP_EOL;
+    # Tell the user what they now need to do in order to install the guest.
+    echo "please run the following command to install the guest" . PHP_EOL;
+    echo "sudo bash " . $settings['INSTALL_GUEST_SCRIPT'] . PHP_EOL;
 }
 
 
