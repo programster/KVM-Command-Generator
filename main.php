@@ -7,7 +7,16 @@
  * http://arstechnica.com/civis/viewtopic.php?f=16&t=1165804
  */
 
+require_once(__DIR__ . '/distro.class.php');
+
 global $settings;
+
+# configure the distros that the user will be able to choose from.
+$distros = array(
+    # we set os variant to ubuntuprecise in the meantime as ubuntutrusty is not recognized
+    new Distro('Ubuntu 14.04', 'ubuntutrusty', 'http://archive.ubuntu.com/ubuntu/dists/trusty/main/installer-amd64/current/images/netboot/mini.iso'),
+    new Distro('Ubuntu 12.04', 'ubuntuprecise', 'http://archive.ubuntu.com/ubuntu/dists/precise/main/installer-amd64/current/images/netboot/mini.iso'),
+);
 
 $settings = array(
     # where iso to install from is
@@ -18,6 +27,8 @@ $settings = array(
 
     # The name we want to give the ubuntu mini iso that we pull. (just so admins know what it is)
     'ISO_NAME'              => 'ubuntu-precise-mini.iso',
+
+    'DISTROS'               => $distros,
 
     # where will put generated script user must run as sudo
     'INSTALL_GUEST_SCRIPT'  => '/tmp/install-guest.sh' 
@@ -56,38 +67,13 @@ function getInput($question, $possibleAnswers=array())
  * @param void
  * @return void
  */
-function checkInstallationMedia()
+function init()
 {
     global $settings;
-
-    print "Checking that you have the installation media and grabbing it if you dont." . PHP_EOL;
-
-    $downloadIso = false;
     
-    if (file_exists($settings['SOURCE_DIR']))
-    {
-        $isoPath = $settings['SOURCE_DIR'] . '/' . $settings['ISO_NAME'];
-        
-        if (!file_exists($isoPath))
-        {
-            $downloadIso = true;
-        }
-    }
-    else
+    if (!file_exists($settings['SOURCE_DIR']))
     {
         mkdir($settings['SOURCE_DIR']);
-        $downloadIso = true;
-    }
-
-    if ($downloadIso)
-    {
-        $isoLocation = 'http://archive.ubuntu.com/ubuntu/dists/precise-updates/main/' .
-                       'installer-amd64/current/images/netboot/mini.iso';
-
-        $fetchCommand = 'wget -O ' . $settings['ISO_NAME'] . ' ' . $isoLocation;
-        
-        chdir($settings['SOURCE_DIR']);
-        shell_exec($fetchCommand);
     }
 }
 
@@ -127,6 +113,58 @@ function configureDisk($switches, $vmName)
 }
 
 
+/**
+ * Ask the user for what distro they wish to deploy and grab it if we do not already have it.
+ * This also sets up the switches that depend on the distro specified
+ * @param Array $switches
+ * @return Array - the modified switches
+ */
+function configureDistro($switches)
+{
+    global $settings;
+
+    $distros = $settings['DISTROS'];
+
+    # DISK PARAMS
+    $filepath = $settings['INSTALLATION_DIR'] . '/' . $vmName . '.img';
+    
+    $distroIndex = -1;
+
+    $numDistros = count($distros);
+    while ($distroIndex < 0 || $distroIndex >= $numDistros)
+    {
+        print "Which distro?" . PHP_EOL;
+        
+        foreach($distros as $index => $distro)
+        {
+            print "[$index] " . $distro->getName() . PHP_EOL;
+        }
+
+        $distroIndex = intval(readline());
+    }
+
+    $distro = $distros[$distroIndex];
+
+    
+    $switches['DISTRO'] = '--os-variant=' . $distro->getOsVariant();
+    $isoName = str_replace(' ', '_', $distro->getName()) . '.iso';
+
+    # Check the iso exists and grab it if not
+    $isoLocation = $settings['SOURCE_DIR'] . '/' . $isoName;
+
+    if (!file_exists($isoLocation))
+    {
+        print "Grabbing ISO as you dont already have it." . PHP_EOL;
+        $fetchCommand = 'wget -O ' . $isoLocation . ' ' . $distro->getIsoLocation();
+        shell_exec($fetchCommand);
+    }
+
+    $switches['INSTALLATION_SRC'] = '--location='  . $settings['SOURCE_DIR'] . '/' . $isoName;
+
+    return $switches;
+}
+
+
 
 function main()
 {
@@ -135,7 +173,7 @@ function main()
     # Create the vms installation dir if it doesn't already exist.
     @mkdir($settings['INSTALLATION_DIR']);
     
-    checkInstallationMedia();
+    init();
 
     # initialize the switches with the default settings
     $switches = array(
@@ -144,17 +182,19 @@ function main()
         #'--vnc', # you cannot have nographics on if this is and vice-versa
         '--nographics',
         '--os-type linux',
-        '--os-variant=ubuntuprecise',
         '--accelerate',
         '--hvm', # kvm does not have paravirt, thats xen only.
         #'--network=bridge:br0', # commenting this out results in using kvms default 192.168.122.1 virbr0 and VM's will not have public IPs
         '--network network=default,model=virtio',
-        '--location='  . $settings['SOURCE_DIR'] . '/' . $settings['ISO_NAME'], # location works on isos as well, but have to use location if want extra args which is needed for instant cli install
-        '--extra-args "console=ttyS0 ks=http://pastebin.com/raw.php?i=tRDdLsW2"' # Setting the console allows us to actually see output and answer prompts.
+
+        # Setting the console allows us to actually see output and answer prompts.
+        '--extra-args "console=ttyS0 ks=http://pastebin.com/raw.php?i=tRDdLsW2"' 
     );
 
     $vmName = getInput("Name for the VM?");
     $switches['NAME'] = '--name ' . $vmName;
+
+    $switches = configureDistro($switches);
 
     $switches = configureDisk($switches, $vmName);
 
