@@ -96,7 +96,7 @@ function configureDisk($switches, $vmName)
 
     $diskSize = getInput("How much allocated storage (in GB)?");
     
-    $switches['DISK'] = '--disk ' . $filepath . ',bus=virtio';
+    $switches['DISK'] = '--disk ' . $filepath . ',bus=virtio,cache=none';
 
     
     $createDiskCmd = 
