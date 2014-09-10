@@ -14,8 +14,15 @@ global $settings;
 # configure the distros that the user will be able to choose from.
 $distros = array(
     # we set os variant to ubuntuprecise in the meantime as ubuntutrusty is not recognized
-    new Distro('Ubuntu 14.04', 'ubuntutrusty', 'http://archive.ubuntu.com/ubuntu/dists/trusty/main/installer-amd64/current/images/netboot/mini.iso'),
-    new Distro('Ubuntu 12.04', 'ubuntuprecise', 'http://archive.ubuntu.com/ubuntu/dists/precise/main/installer-amd64/current/images/netboot/mini.iso'),
+    new Distro('Ubuntu 14.04', 
+               'ubuntutrusty', 
+               'http://archive.ubuntu.com/ubuntu/dists/trusty/main/installer-amd64/current/images/netboot/mini.iso',
+               'http://pastebin.com/raw.php?i=tRDdLsW2'),
+    
+    new Distro('CentOS 6.5', 
+               'rhel6', 
+               'http://mirrors.ukfast.co.uk/sites/ftp.centos.org/6.5/isos/x86_64/CentOS-6.5-x86_64-netinstall.iso',
+               'http://pastebin.com/raw.php?i=4qi6WEYt'),
 );
 
 $settings = array(
@@ -102,7 +109,7 @@ function configureDisk($switches, $vmName)
     $createDiskCmd = 
         'qemu-img create ' .
         '-f qcow2 ' .
-        '-o preallocation=metadata,compat=1.1,lazy_refcounts=on ' .
+        '-o preallocation=metadata,lazy_refcounts=on ' .
         $filepath . ' ' .
         $diskSize . 'G' . PHP_EOL;
 
@@ -135,19 +142,20 @@ function configureDistro($switches)
     {
         print "Which distro?" . PHP_EOL;
         
-        foreach($distros as $index => $distro)
+        foreach($distros as $index => $distroOption)
         {
-            print "[$index] " . $distro->getName() . PHP_EOL;
+            print "[$index] " . $distroOption->getName() . PHP_EOL;
         }
 
         $distroIndex = intval(readline());
     }
 
-    $distro = $distros[$distroIndex];
+    /* @var $chosenDistro Distro */
+    $chosenDistro = $distros[$distroIndex];
 
     
-    $switches['DISTRO'] = '--os-variant=' . $distro->getOsVariant();
-    $isoName = str_replace(' ', '_', $distro->getName()) . '.iso';
+    $switches['DISTRO'] = '--os-variant=' . $chosenDistro->getOsVariant();
+    $isoName = str_replace(' ', '_', $chosenDistro->getName()) . '.iso';
 
     # Check the iso exists and grab it if not
     $isoLocation = $settings['SOURCE_DIR'] . '/' . $isoName;
@@ -155,11 +163,21 @@ function configureDistro($switches)
     if (!file_exists($isoLocation))
     {
         print "Grabbing ISO as you dont already have it." . PHP_EOL;
-        $fetchCommand = 'wget -O ' . $isoLocation . ' ' . $distro->getIsoLocation();
+        $fetchCommand = 'wget -O ' . $isoLocation . ' ' . $chosenDistro->getIsoLocation();
         shell_exec($fetchCommand);
     }
 
     $switches['INSTALLATION_SRC'] = '--location='  . $settings['SOURCE_DIR'] . '/' . $isoName;
+    
+    $kickstartFile = $chosenDistro->getKickstartUrl();
+    $userKs = getInput('Specify the url to a kickstart file if you want to override the default: ');
+    if (!empty($userKs))
+    {
+        $kickstartFile = $userKs;
+    }
+    
+    # Setting the console allows us to actually see output and answer prompts.  
+    $switches['EXTRA_ARGS'] = '--extra-args "console=ttyS0 ks=' . $kickstartFile . '"';
 
     return $switches;
 }
@@ -184,11 +202,8 @@ function main()
         '--os-type linux',
         '--accelerate',
         '--hvm', # kvm does not have paravirt, thats xen only.
-        #'--network=bridge:br0', # commenting this out results in using kvms default 192.168.122.1 virbr0 and VM's will not have public IPs
-        '--network network=default,model=virtio',
-
-        # Setting the console allows us to actually see output and answer prompts.
-        '--extra-args "console=ttyS0 ks=http://pastebin.com/raw.php?i=tRDdLsW2"' 
+        #'--network network=bridge:kvmbr0,model=virtio', # commenting this out results in using kvms default 192.168.122.1 virbr0 and VM's will not have public IPs
+        '--network network=default,model=virtio'
     );
 
     $vmName = getInput("Name for the VM?");
@@ -200,14 +215,12 @@ function main()
 
     # END OF DISK
 
-    $switches['RAM'] = '--ram=' . getInput("How much RAM (MB)?");
-    $yesNoOptions = array('yes', 'no');
-    
+    $switches['RAM'] = '--ram=' . getInput("How much RAM (MB)?");    
 
     # Unfortunately, if you don't specify this paramater, then you default to just one vcpu
     # instead of being able to access all of them
     $switches['VCPUS'] = '--vcpus=' . getInput('Access to how many VCPUs?');
-
+    
     $switchValues = array_values($switches);
 
     $join = ' \\' . PHP_EOL;
