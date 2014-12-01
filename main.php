@@ -17,12 +17,21 @@ $distros = array(
     new Distro('Ubuntu 14.04', 
                'ubuntutrusty', 
                'http://archive.ubuntu.com/ubuntu/dists/trusty/main/installer-amd64/current/images/netboot/mini.iso',
-               'http://pastebin.com/raw.php?i=tRDdLsW2'),
+               'http://pastebin.com/raw.php?i=tRDdLsW2',
+               'ks'),
+
+    new Distro('Debian 7.7', 
+               'debianwheezy', 
+               'http://http.debian.net/debian/dists/stable/main/installer-amd64/',
+               'http://subsole.org/static/misc/debian-preseed.cfg',
+               "url",
+               "auto=true text hostname=debian"),
     
     new Distro('CentOS 6.5', 
                'rhel6', 
                'http://mirrors.ukfast.co.uk/sites/ftp.centos.org/6.5/isos/x86_64/CentOS-6.5-x86_64-netinstall.iso',
-               'http://pastebin.com/raw.php?i=4qi6WEYt'),
+               'http://pastebin.com/raw.php?i=4qi6WEYt',
+               "ks"),
 );
 
 $settings = array(
@@ -155,19 +164,31 @@ function configureDistro($switches)
 
     
     $switches['DISTRO'] = '--os-variant=' . $chosenDistro->getOsVariant();
-    $isoName = str_replace(' ', '_', $chosenDistro->getName()) . '.iso';
 
-    # Check the iso exists and grab it if not
-    $isoLocation = $settings['SOURCE_DIR'] . '/' . $isoName;
+    $revLocation = strtolower(strrev($chosenDistro->getLocation()));
 
-    if (!file_exists($isoLocation))
+    if (substr($revLocation, 0, 3) == "osi") # not all "locations" are isos
     {
-        print "Grabbing ISO as you dont already have it." . PHP_EOL;
-        $fetchCommand = 'wget -O ' . $isoLocation . ' ' . $chosenDistro->getIsoLocation();
-        shell_exec($fetchCommand);
+        $isoName = str_replace(' ', '_', $chosenDistro->getName()) . '.iso';
+
+        # Check the iso exists and grab it if not
+        $isoLocation = $settings['SOURCE_DIR'] . '/' . $isoName;
+
+        if (!file_exists($isoLocation))
+        {
+            print "Grabbing ISO as you dont already have it." . PHP_EOL;
+            $fetchCommand = 'wget -O ' . $isoLocation . ' ' . $chosenDistro->getLocation();
+            shell_exec($fetchCommand);
+        }
+
+        $switches['INSTALLATION_SRC'] = '--location '  . $settings['SOURCE_DIR'] . '/' . $isoName;
+    }
+    else
+    {
+        $switches['INSTALLATION_SRC'] = '--location '  . $chosenDistro->getLocation();
     }
 
-    $switches['INSTALLATION_SRC'] = '--location='  . $settings['SOURCE_DIR'] . '/' . $isoName;
+    
     
     $kickstartFile = $chosenDistro->getKickstartUrl();
     $userKs = getInput('Specify the url to a kickstart file if you want to override the default: ');
@@ -176,8 +197,19 @@ function configureDistro($switches)
         $kickstartFile = $userKs;
     }
     
-    # Setting the console allows us to actually see output and answer prompts.  
-    $switches['EXTRA_ARGS'] = '--extra-args "console=ttyS0 ks=' . $kickstartFile . '"';
+    # Setting the console allows us to actually see output and answer prompts.
+    $extraDistroSpecificArgs = $chosenDistro->getExtraArgs();
+    if ($extraDistroSpecificArgs !== "")
+    {
+        $extraDistroSpecificArgs = " " . $extraDistroSpecificArgs;
+    }
+
+    $switches['EXTRA_ARGS'] = 
+        '--extra-args "' .
+            'console=ttyS0 ' .
+            $chosenDistro->getKickstartArgKeyword() . '=' . $kickstartFile . 
+            $extraDistroSpecificArgs .
+        '"';
 
     return $switches;
 }
@@ -215,11 +247,11 @@ function main()
 
     # END OF DISK
 
-    $switches['RAM'] = '--ram=' . getInput("How much RAM (MB)?");    
+    $switches['RAM'] = '--ram ' . getInput("How much RAM (MB)?");    
 
     # Unfortunately, if you don't specify this paramater, then you default to just one vcpu
     # instead of being able to access all of them
-    $switches['VCPUS'] = '--vcpus=' . getInput('Access to how many VCPUs?');
+    $switches['VCPUS'] = '--vcpus ' . getInput('Access to how many VCPUs?');
     
     $switchValues = array_values($switches);
 
