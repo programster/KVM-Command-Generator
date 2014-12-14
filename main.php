@@ -23,7 +23,7 @@ $distros = array(
     new Distro('Debian 7.7', 
                'debianwheezy', 
                'http://http.debian.net/debian/dists/stable/main/installer-amd64/',
-               'http://subsole.org/static/misc/debian-preseed.cfg',
+               'https://raw.githubusercontent.com/programster/KVM-Command-Generator/master/kickstart_files/debian_wheezy.cfg',
                "url",
                "auto=true text hostname=debian"),
     
