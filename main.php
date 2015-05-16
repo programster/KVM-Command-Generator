@@ -119,8 +119,23 @@ function configureDisk($switches, $vmName)
     
     $diskSize = getInput("How much allocated storage (in GB)?");
     
-    $switches['DISK'] = '--disk ' . $filepath . ',bus=virtio,cache=none';
+    $answers = array("y", "n");
+    $answer = getInput("Does your filesystem support \"cache=none\" ? (ZFS doesn't)", $answers);
     
+    switch ($answer)
+    {
+        case 'y':
+        {
+            $switches['DISK'] = '--disk ' . $filepath . ',bus=virtio,format=qcow2,cache=none';
+        }
+        break;
+        
+        case 'n':
+        {
+            $switches['DISK'] = '--disk ' . $filepath . ',bus=virtio,format=qcow2';
+        }
+        break;
+    }
     
     $createDiskCmd = 
         'qemu-img create ' .
