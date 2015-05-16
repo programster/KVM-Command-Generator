@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Class for representing a suppoted distro to deploy.
+ * osVariant can be looked up from the command: "sudo virt-install --os-variant list"
+ *
+ */
+
 class Distro
 {
     private $m_name;
