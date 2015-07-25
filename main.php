@@ -13,19 +13,28 @@ global $settings;
 
 # configure the distros that the user will be able to choose from.
 $distros = array(
-    # we set os variant to ubuntuprecise in the meantime as ubuntutrusty is not recognized
+    # we set os variant to debianwheezy in the meantime as debianjessie is not recognized
+    # we use pastebin links rather than linking to github raw because for some reason github raw
+    # will fail to download.
     new Distro('Ubuntu 14.04', 
                'ubuntutrusty', 
                'http://archive.ubuntu.com/ubuntu/dists/trusty/main/installer-amd64/current/images/netboot/mini.iso',
                'http://pastebin.com/raw.php?i=tRDdLsW2',
                'ks'),
     
+    new Distro('Debian 7.7', 
+               'debianwheezy', 
+               'http://http.debian.net/debian/dists/stable/main/installer-amd64/',
+               'http://pastebin.com/raw.php?i=JEZn5Q5n',
+               "url",
+               "auto=true text hostname=debian domain=debian"),
+    
     new Distro('Debian 8', 
                'debianwheezy', # jessie not yet listed in os variants
                'http://ukdebian.mirror.anlx.net/debian/dists/jessie/main/installer-amd64/',
-               'http://raw.githubusercontent.com/programster/KVM-Command-Generator/master/kickstart_files/debian_jessie.cfg',
+               'http://pastebin.com/raw.php?i=3NmQCK42',
                "url",
-               "auto=true text hostname=debian"),
+               "auto=true text hostname=debian domain=debian"),
     
     new Distro('CentOS 6.5', 
                'rhel6', 
