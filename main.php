@@ -20,17 +20,10 @@ $distros = array(
                'http://pastebin.com/raw.php?i=tRDdLsW2',
                'ks'),
     
-    new Distro('Debian 7.7', 
-               'debianwheezy', 
-               'http://http.debian.net/debian/dists/stable/main/installer-amd64/',
-               'https://raw.githubusercontent.com/programster/KVM-Command-Generator/master/kickstart_files/debian_wheezy.cfg',
-               "url",
-               "auto=true text hostname=debian"),
-    
-    new Distro('Debian 8.0', 
+    new Distro('Debian 8', 
                'debianwheezy', # jessie not yet listed in os variants
-               'http://ukdebian.mirror.anlx.net/debian/dists/Debian8.0/main/installer-amd64/',
-               'https://raw.githubusercontent.com/programster/KVM-Command-Generator/master/kickstart_files/debian_jessie.cfg',
+               'http://ukdebian.mirror.anlx.net/debian/dists/jessie/main/installer-amd64/',
+               'http://raw.githubusercontent.com/programster/KVM-Command-Generator/master/kickstart_files/debian_jessie.cfg',
                "url",
                "auto=true text hostname=debian"),
     
