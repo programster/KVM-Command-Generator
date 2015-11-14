@@ -19,7 +19,7 @@ $distros = array(
     new Distro('Ubuntu 14.04', 
                'ubuntutrusty', 
                'http://archive.ubuntu.com/ubuntu/dists/trusty/main/installer-amd64/current/images/netboot/mini.iso',
-               'http://pastebin.com/raw.php?i=tRDdLsW2',
+               'http://pastebin.com/raw.php?i=SrTvbt6Z',
                'ks'),
     
     new Distro('Debian 7.7', 
