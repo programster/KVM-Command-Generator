@@ -16,31 +16,43 @@ $distros = array(
     # we set os variant to debianwheezy in the meantime as debianjessie is not recognized
     # we use pastebin links rather than linking to github raw because for some reason github raw
     # will fail to download.
-    new Distro('Ubuntu 14.04', 
-               'ubuntutrusty', 
-               'http://archive.ubuntu.com/ubuntu/dists/trusty/main/installer-amd64/current/images/netboot/mini.iso',
-               'http://pastebin.com/raw.php?i=SrTvbt6Z',
-               'ks'),
-    
-    new Distro('Debian 7.7', 
-               'debianwheezy', 
-               'http://http.debian.net/debian/dists/stable/main/installer-amd64/',
-               'http://pastebin.com/raw.php?i=JEZn5Q5n',
-               "url",
-               "auto=true text hostname=debian domain=debian"),
-    
-    new Distro('Debian 8', 
-               'debianwheezy', # jessie not yet listed in os variants
-               'http://ukdebian.mirror.anlx.net/debian/dists/jessie/main/installer-amd64/',
-               'http://pastebin.com/raw.php?i=3NmQCK42',
-               "url",
-               "auto=true text hostname=debian domain=debian"),
-    
-    new Distro('CentOS 6.5', 
-               'rhel6', 
-               'http://mirrors.ukfast.co.uk/sites/ftp.centos.org/6.5/isos/x86_64/CentOS-6.5-x86_64-netinstall.iso',
-               'http://pastebin.com/raw.php?i=4qi6WEYt',
-               "ks"),
+    new Distro(
+       'Ubuntu 14.04', 
+       'ubuntutrusty', 
+       'http://archive.ubuntu.com/ubuntu/dists/trusty/main/installer-amd64/current/images/netboot/mini.iso',
+       'http://pastebin.com/raw.php?i=SrTvbt6Z',
+       'ks'
+    ),
+    new Distro(
+        'Debian 7.7', 
+        'debianwheezy', 
+        'http://http.debian.net/debian/dists/stable/main/installer-amd64/',
+        'http://pastebin.com/raw.php?i=JEZn5Q5n',
+        "url",
+        "auto=true text hostname=debian domain=debian"
+    ),
+    new Distro(
+       'Debian 8', 
+       'debianwheezy', # jessie not yet listed in os variants
+       'http://ukdebian.mirror.anlx.net/debian/dists/jessie/main/installer-amd64/',
+       'http://pastebin.com/raw.php?i=3NmQCK42',
+       "url",
+       "auto=true text hostname=debian domain=debian"
+    ),
+    new Distro(
+       'CentOS 6.7', 
+       'rhel6', 
+       'https://www.mirrorservice.org/sites/mirror.centos.org/6/isos/x86_64/CentOS-6.7-x86_64-netinstall.iso',
+       'http://pastebin.com/raw.php?i=4qi6WEYt',
+       "ks"
+    ),
+    new Distro(
+       'CentOS 7', 
+       'rhel7', 
+       'https://www.mirrorservice.org/sites/mirror.centos.org/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1511.iso',
+       'http://pastebin.com/raw/KmV2cnET',
+       "ks"
+    ),
 );
 
 $settings = array(
