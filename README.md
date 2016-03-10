@@ -14,6 +14,11 @@ Password: root
 Username: ubuntu
 Password: ubuntu
 
+### CentOS 7
+Username: admin
+Password: changeme123
+Root Password: centos 
+
 
 ## Extra Issues
 The debian 8.1 guest image has an issue related to systemd, in which you will not see the console. Following [this post](https://unix.stackexchange.com/questions/203768/debian-8-kvm-guest-loading-initial-ramdisk) to resolve the issue after installing the guest.
