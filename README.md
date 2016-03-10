@@ -14,10 +14,13 @@ Password: root
 Username: ubuntu
 Password: ubuntu
 
-### CentOS 7
+### CentOS 6
+Root Password: centos
+
+### CentOS 7 (recommend 1024+ MB RAM for installation)
 Username: admin
 Password: changeme123
-Root Password: centos 
+Root Password: centos
 
 
 ## Extra Issues
