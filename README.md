@@ -7,20 +7,20 @@ Simple CLI script to generate the virt-install command necessary to install ubun
 ## Default Accounts
 Below are the default login details for guests installed using the default kickstart scripts.
 ### Debian
-Username: root
-Password: root
+* Username: root
+* Password: root
 
 ### Ubuntu
-Username: ubuntu
-Password: ubuntu
+* Username: ubuntu
+* Password: ubuntu
 
 ### CentOS 6
-Root Password: centos
+* Root Password: centos
 
 ### CentOS 7 (recommend 1024+ MB RAM for installation)
-Username: admin
-Password: changeme123
-Root Password: centos
+* Username: admin
+* Password: changeme123
+* Root Password: centos
 
 
 ## Extra Issues
