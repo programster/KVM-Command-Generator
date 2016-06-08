@@ -13,9 +13,15 @@ global $settings;
 
 # configure the distros that the user will be able to choose from.
 $distros = array(
-    # we set os variant to debianwheezy in the meantime as debianjessie is not recognized
     # we use pastebin links rather than linking to github raw because for some reason github raw
     # will fail to download.
+    new Distro(
+       'Ubuntu 16.04', 
+       'ubuntutrusty', # xenial not listed in options
+       'http://archive.ubuntu.com/ubuntu/dists/xenial/main/installer-amd64/current/images/netboot/mini.iso',
+       'http://pastebin.com/raw/Q3Yq6EyQ', # no swap, no lvm, installs openssh-server
+       'ks'
+    ),
     new Distro(
        'Ubuntu 14.04', 
        'ubuntutrusty', 
@@ -25,7 +31,7 @@ $distros = array(
     ),
     new Distro(
         'Debian 7.7', 
-        'debianwheezy', 
+        'debianwheezy',
         'http://http.debian.net/debian/dists/stable/main/installer-amd64/',
         'http://pastebin.com/raw.php?i=JEZn5Q5n',
         "url",
