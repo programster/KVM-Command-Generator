@@ -1,7 +1,7 @@
 KVM-Command-Generator
 =====================
 
-Simple CLI script to generate the virt-install command necessary to install ubuntu 12 kvm guests. Also manages the automatic retrieval and usage of the ubuntu mini.iso
+Simple CLI script to help witht he installation/deployment of KVM guests on Ubuntu 14.04. This includes the automatic retrieval and usage of the necessary ISO images, kickstart scripts, and generation of storage file for the guest.
 
 
 ## Default Accounts
