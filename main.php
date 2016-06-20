@@ -138,7 +138,7 @@ function configureDisk($switches, $vmName)
     $diskSize = getInput("How much allocated storage (in GB)?");
     
     $answers = array("y", "n");
-    $answer = getInput("Does your filesystem support \"cache=none\" ? (ZFS doesn't)", $answers);
+    $answer = getInput("Is the VM's disk file going to be stored on a remote server's NFS?", $answers);
     
     switch ($answer)
     {
