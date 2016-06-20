@@ -1,7 +1,7 @@
 KVM-Command-Generator
 =====================
 
-Simple CLI script to help witht he installation/deployment of KVM guests on Ubuntu 14.04. This includes the automatic retrieval and usage of the necessary ISO images, kickstart scripts, and generation of storage file for the guest.
+Simple CLI script to help witht he installation/deployment of KVM guests on Ubuntu 16.04. For Ubuntu 14.04 support, please check out the previous releases. This tool includes the automatic retrieval and usage of the necessary ISO images, kickstart scripts, and generation of storage file for the guest.
 
 
 ## Default Accounts

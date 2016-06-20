@@ -2,7 +2,8 @@
 
 /**
  * Class for representing a suppoted distro to deploy.
- * osVariant can be looked up from the command: "sudo virt-install --os-variant list"
+ * osVariant can be looked up from the command: "osinfo-query os" 
+ * after having installed the "libosinfo-bin" package
  *
  */
 
@@ -29,7 +30,7 @@ class Distro
         $this->m_kickstartArgKeyword = $kickstartArgKeyword;
         $this->m_extraArgs           = $extraArgs;
     }
-
+    
     public function getName()                { return $this->m_name; }
     public function getOsVariant()           { return $this->m_osVariant; }
     public function getLocation()            { return $this->m_location; }

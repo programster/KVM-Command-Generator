@@ -17,45 +17,45 @@ $distros = array(
     # will fail to download.
     new Distro(
        'Ubuntu 16.04', 
-       'ubuntutrusty', # xenial not listed in options
-       'http://archive.ubuntu.com/ubuntu/dists/xenial/main/installer-amd64/current/images/netboot/mini.iso',
+       'ubuntu16.04', # xenial not listed in options
+       'http://us.archive.ubuntu.com/ubuntu/dists/xenial/main/installer-amd64/',
        'http://pastebin.com/raw/Q3Yq6EyQ', # no swap, no lvm, installs openssh-server
        'ks'
     ),
     new Distro(
        'Ubuntu 14.04', 
-       'ubuntutrusty', 
-       'http://archive.ubuntu.com/ubuntu/dists/trusty/main/installer-amd64/current/images/netboot/mini.iso',
+       'ubuntu14.04', 
+       'http://us.archive.ubuntu.com/ubuntu/dists/trusty/main/installer-amd64/',
        'http://pastebin.com/raw.php?i=SrTvbt6Z',
        'ks'
     ),
     new Distro(
-        'Debian 7.7', 
-        'debianwheezy',
-        'http://http.debian.net/debian/dists/stable/main/installer-amd64/',
+        'Debian 7', 
+        'debian7',
+        'http://ftp.us.debian.org/debian/dists/wheezy/main/installer-amd64/',
         'http://pastebin.com/raw.php?i=JEZn5Q5n',
         "url",
         "auto=true text hostname=debian domain=debian"
     ),
     new Distro(
        'Debian 8', 
-       'debianwheezy', # jessie not yet listed in os variants
-       'http://ukdebian.mirror.anlx.net/debian/dists/jessie/main/installer-amd64/',
+       'debian8', # jessie not yet listed in os variants
+       'http://ftp.us.debian.org/debian/dists/jessie/main/installer-amd64/',
        'http://pastebin.com/raw.php?i=3NmQCK42',
        "url",
        "auto=true text hostname=debian domain=debian"
     ),
     new Distro(
-       'CentOS 6.7', 
-       'rhel6', 
-       'https://www.mirrorservice.org/sites/mirror.centos.org/6/isos/x86_64/CentOS-6.7-x86_64-netinstall.iso',
+       'CentOS 6', 
+       'centos6.5', 
+       'ftp://ftp.mirrorservice.org/sites/mirror.centos.org/6/os/x86_64/',
        'http://pastebin.com/raw.php?i=4qi6WEYt',
        "ks"
     ),
     new Distro(
        'CentOS 7', 
-       'rhel7', 
-       'https://www.mirrorservice.org/sites/mirror.centos.org/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1511.iso',
+       'centos7.0', 
+       'ftp://ftp.mirrorservice.org/sites/mirror.centos.org/7/os/x86_64/',
        'http://pastebin.com/raw/KmV2cnET',
        "ks"
     ),
@@ -63,13 +63,11 @@ $distros = array(
 
 $settings = array(
     # where iso to install from is
-    'SOURCE_DIR'            => dirname(__FILE__) . '/installation_media',
+    'SOURCE_DIR'            => __DIR__ . '/installation_media',
     
     # Where we are going to store the guest VMs disk images
-    'INSTALLATION_DIR'      => dirname(__FILE__) . '/vms', 
+    'INSTALLATION_DIR'      => __DIR__ . '/vms', 
     
-    # The name we want to give the ubuntu mini iso that we pull. (just so admins know what it is)
-    'ISO_NAME'              => 'ubuntu-precise-mini.iso',
     
     'DISTROS'               => $distros,
     
@@ -205,7 +203,7 @@ function configureDistro($switches)
     $chosenDistro = $distros[$distroIndex];
     
     
-    $switches['DISTRO'] = '--os-variant=' . $chosenDistro->getOsVariant();
+    $switches['DISTRO'] = '--os-variant ' . $chosenDistro->getOsVariant();
     
     $revLocation = strtolower(strrev($chosenDistro->getLocation()));
     
