@@ -1,0 +1,6 @@
+{
+    "require": {
+        "programster/cli-menu": "1.0.*",
+        "iRAP/core-libs": "1.1.*"
+    }
+}
