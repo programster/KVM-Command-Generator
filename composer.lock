@@ -4,9 +4,49 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "881e93c154f28cb3addf5239a7676efb",
-    "content-hash": "56346a69c6077cb7e411da182cdd6b9d",
+    "hash": "6169b94052a5770be71aaaae4d12f5cf",
+    "content-hash": "ee320ad7f29a744249d2306b2f4486d4",
     "packages": [
+        {
+            "name": "irap/autoloader",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iRAP-software/package-autoloader.git",
+                "reference": "411b9d45c6cce4afeda258da6be8003d9edebe66"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iRAP-software/package-autoloader/zipball/411b9d45c6cce4afeda258da6be8003d9edebe66",
+                "reference": "411b9d45c6cce4afeda258da6be8003d9edebe66",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "iRAP\\Autoloader\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stuart Page",
+                    "email": "stuart.page@irap.org"
+                }
+            ],
+            "description": "An package to make it easy to autoload code.",
+            "homepage": "https://github.com/iRAP-software/package-autoloader",
+            "keywords": [
+                "autoloader"
+            ],
+            "time": "2015-06-17 10:44:56"
+        },
         {
             "name": "irap/core-libs",
             "version": "1.1.19",

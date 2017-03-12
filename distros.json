@@ -1,0 +1,50 @@
+[
+    {
+        "name": "Ubuntu 16.04",
+        "os_variant": "ubuntu16.04",
+        "distro_location": "http://us.archive.ubuntu.com/ubuntu/dists/xenial/main/installer-amd64/",
+        "kickstart_location": "http://pastebin.com/raw/Q3Yq6EyQ",
+        "extra_args": "",
+        "kickstart_arg_keyword": "ks"
+    },
+    {
+        "name": "Ubuntu 14.04",
+        "os_variant": "ubuntu14.04",
+        "distro_location": "http://us.archive.ubuntu.com/ubuntu/dists/trusty/main/installer-amd64/",
+        "kickstart_location": "http://pastebin.com/raw.php?i=SrTvbt6Z",
+        "extra_args": "",
+        "kickstart_arg_keyword": "ks"
+    },
+    {
+        "name": "Debian 7",
+        "os_variant": "debian7",
+        "distro_location": "http://ftp.us.debian.org/debian/dists/wheezy/main/installer-amd64/",
+        "kickstart_location": "http://pastebin.com/raw.php?i=JEZn5Q5n",
+        "extra_args": "auto=true text hostname=debian domain=debian",
+        "kickstart_arg_keyword": "url"
+    },
+    {
+        "name": "Debian 8",
+        "os_variant": "debian8",
+        "distro_location": "http://ftp.us.debian.org/debian/dists/jessie/main/installer-amd64/",
+        "kickstart_location": "http://pastebin.com/raw.php?i=3NmQCK42",
+        "extra_args": "auto=true text hostname=debian domain=debian",
+        "kickstart_arg_keyword": "url"
+    },
+    {
+        "name": "CentOS 6",
+        "os_variant": "centos6.5",
+        "distro_location": "ftp://ftp.mirrorservice.org/sites/mirror.centos.org/6/os/x86_64/",
+        "kickstart_location": "http://pastebin.com/raw.php?i=4qi6WEYt",
+        "extra_args": "",
+        "kickstart_arg_keyword": "ks"
+    },
+    {
+        "name": "CentOS 7",
+        "os_variant": "centos7.0",
+        "distro_location": "ftp://ftp.mirrorservice.org/sites/mirror.centos.org/7/os/x86_64/",
+        "kickstart_location": "http://pastebin.com/raw/KmV2cnET",
+        "extra_args": "",
+        "kickstart_arg_keyword": "ks"
+    }
+]
