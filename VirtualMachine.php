@@ -35,21 +35,21 @@ class VirtualMachine
         }
         
         $this->m_distro = $distroMenu->run();
-
+        
         if (iRAP\CoreLibs\StringLib::endsWith($this->m_distro->getLocation(), ".iso", false))
         {
             $isoName = str_replace(' ', '_', $this->m_distro->getName()) . '.iso';
             
             # Check the iso exists and grab it if not
             $isoLocation = ISOS_DIR . '/' . $isoName;
-
+            
             if (!file_exists($isoLocation))
             {
                 print "Grabbing ISO as you dont already have it." . PHP_EOL;
                 $fetchCommand = 'wget -O ' . $isoLocation . ' ' . $this->m_distro->getLocation();
                 shell_exec($fetchCommand);
             }
-
+            
             $this->m_installationSource = ISOS_DIR . '/' . $isoName;
         }
         else
@@ -94,8 +94,20 @@ class VirtualMachine
         # Temporary hack. Set to 777 so Virt manager definitely has access to the disk.
         shell_exec("chmod 777 " . $this->m_configuredDisk->getFilepath());
         
-        echo PHP_EOL . "Running the VM installer. This will take a while: " . $this->getInstallCommand() . PHP_EOL;
-        shell_exec($this->getInstallCommand());
+        if (DEBUG)
+        {
+            print PHP_EOL;
+            print "Run the following command to install the guest and watch it install." . PHP_EOL;
+            print $this->getInstallCommand() . PHP_EOL;
+        }
+        else
+        {
+            echo PHP_EOL . "Running the VM installer. " . PHP_EOL . 
+                "This will proceed in the background and take quite a while. " . 
+                "You will know when the guest has finished installation when it is no longer running." . PHP_EOL;
+            
+            shell_exec($this->getInstallCommand());
+        }
     }
     
     
@@ -127,7 +139,14 @@ class VirtualMachine
             '--disk ' . $this->m_configuredDisk->getFilepath() .
             ',bus=virtio' . 
             ',format=' . $this->m_configuredDisk->getFormat() . 
-            ',cache=' . $this->m_configuredDisk->getCacheMode();     
+            ',cache=' . $this->m_configuredDisk->getCacheMode();
+        
+        // when debugging, we want to automatically connect to the console to watch
+        // the installation to check nothing is wrong with kickstart files etc.
+        if (DEBUG === FALSE)
+        {
+            $switches['NO_AUTO_CONSOLE'] = '--noautoconsole ';
+        }
         
         # Setting the console allows us to actually see output and answer prompts.
         $extraDistroSpecificArgs = $this->m_distro->getExtraArgs();
@@ -145,7 +164,7 @@ class VirtualMachine
             '"';
         
         $switchValues = array_values($switches);
-
+        
         $join = ' \\' . PHP_EOL;
         return 'virt-install ' . implode($join, $switchValues);
     }
