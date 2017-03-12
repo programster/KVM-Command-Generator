@@ -3,7 +3,7 @@
         "name": "Ubuntu 16.04",
         "os_variant": "ubuntu16.04",
         "distro_location": "http://us.archive.ubuntu.com/ubuntu/dists/xenial/main/installer-amd64/",
-        "kickstart_location": "http://pastebin.com/raw/Q3Yq6EyQ",
+        "kickstart_location": "http://pastebin.com/raw/WxQygWpm",
         "extra_args": "",
         "kickstart_arg_keyword": "ks"
     },
