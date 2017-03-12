@@ -17,9 +17,14 @@ class App
         $actionMenu = new \Programster\CliMenu\ActionMenu("Main Menu");
         $actionMenu->addOption(new Programster\CliMenu\MenuOption("Install fresh VM", function(){ self::installVM(); }));
         $actionMenu->addOption(new Programster\CliMenu\MenuOption("Clone VM", function(){ self::cloneVM(); }));
+        
         $actionMenu->addOption(new Programster\CliMenu\MenuOption("Create Snapshot", function(){ self::createSnapshot(); }));
         $actionMenu->addOption(new Programster\CliMenu\MenuOption("Delete Snapshot", function(){ self::deleteSnapshot(); }));
+        $actionMenu->addOption(new Programster\CliMenu\MenuOption("Restore Snapshot", function(){ self::restoreSnapshot(); }));
+        
         $actionMenu->addOption(new Programster\CliMenu\MenuOption("Rename VM", function(){ self::renameVM(); }));
+        $actionMenu->addOption(new Programster\CliMenu\MenuOption("Shutdown VM", function(){ self::shutdownVm(); }));
+        $actionMenu->addOption(new Programster\CliMenu\MenuOption("Start VM", function(){ self::startVM(); }));
         $actionMenu->addOption(new Programster\CliMenu\MenuOption("Quit", function(){ die(PHP_EOL . "Thank you come again." . PHP_EOL); }));
             
         while (true)
@@ -53,7 +58,86 @@ class App
      */
     private static function createSnapshot()
     {
-        echo "User chose to snapshot a VM." . PHP_EOL;
+        $vm = self::getChosenVmFromUser();
+        
+        $externalSnapshotOption = new Programster\CliMenu\MenuOption(
+            "External (fast)", 
+            function() use($vm) { self::createExternalSnapshot($vm); }
+        );
+        
+        $internalSnapshotOption = new Programster\CliMenu\MenuOption(
+            "Internal (requires qcow2 based guest)", 
+            function() use($vm) { self::createInternalSnapshot($vm); }
+        );
+        
+        $snapshotMenu = new Programster\CliMenu\ActionMenu("Snapshot Type");
+        $snapshotMenu->addOption($externalSnapshotOption);
+        $snapshotMenu->addOption($internalSnapshotOption);
+        $snapshotMenu->run();        
+    }
+    
+    
+    /**
+     * Create an external snapshot on the specified VM
+     * @param string $vmName - identifier for the VM.
+     */
+    private static function createExternalSnapshot($vmName)
+    {
+        $snapshotName = self::getInput("Snapshot name: ");
+        
+        $cmd = 
+            'bash ' . __DIR__ . '/create-external-snapshot.sh' .
+            ' "' . $vmName . '"' . 
+            ' "' . $snapshotName . '"' . 
+            ' "' . VM_DIR . '"';
+        
+        shell_exec($cmd);
+    }
+    
+    
+    /**
+     * Create an internal snapshot on the specified VM
+     * @param string $vmName - identifier for the VM.
+     */
+    private static function createInternalSnapshot($vmName)
+    {
+        if (false)
+        {
+            $snapshotName = self::getInput("Snapshot Name: ");
+            $description = self::getInput("Snapshot Description: ");
+            
+            // Strip out any quotiation marks that could cause our command to fail later.
+            $snapshotName = iRAP\CoreLibs\StringLib::replace('"', '', $snapshotName);
+            $description = iRAP\CoreLibs\StringLib::replace('"', '', $description);
+            
+            $cmd = 'virsh snapshot-create-as ' . $vmName . 
+                    ' "' . $snapshotName . '"' . 
+                    ' "' . $description . '"';
+            
+            shell_exec($cmd);
+        }
+        else
+        {
+            print "Cannot yet support both internal and external snapshots, so keeping internal only" . PHP_EOL;
+        }
+    }
+    
+    
+    /**
+     * Get the user to choose a VM.
+     * @return string - the name of the VM.
+     */
+    private static function getChosenVmFromUser()
+    {
+        $vms = \iRAP\CoreLibs\Filesystem::getDirectories(VM_DIR, false, false);
+        $vmsMenu = new Programster\CliMenu\ValueMenu("Which VM?");
+        
+        foreach ($vms as $vm)
+        {
+            $vmsMenu->addOption($vm, $vm);
+        }
+        
+        return $vmsMenu->run();
     }
     
     
