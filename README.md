@@ -5,6 +5,7 @@ This CLI based application aims to simplify using KVM on a single **Ubuntu 16.04
 
 ## Requirements
 * Ubuntu 16.04 host (other distros will probably work, but not officially supported).
+* MySQL Server (developed against MariaDB 10.0 which can be installed on Ubuntu 16.04 with `sudo apt-get install mariadb-server-10.0`)
 * PHP 7.0 CLI. You can install this with:
 
 ```
