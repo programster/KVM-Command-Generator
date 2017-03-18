@@ -33,7 +33,7 @@ class ConfiguredDisk
         $formatMenu->addOption("Raw", "raw");
         $this->m_diskFormat = $formatMenu->run();
         
-        $this->m_filepath = VM_DIR . '/' . $vmName . '/disk.' . $this->m_diskFormat;
+        $this->m_filepath = KVM_DIR . '/' . $vmName . '/disk.' . $this->m_diskFormat;
         
         // For more info on the types:
         // https://www.ibm.com/support/knowledgecenter/linuxonibm/liaat/liaatbpkvmguestcache.htm
