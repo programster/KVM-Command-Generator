@@ -46,6 +46,7 @@ class App
     
     /**
      * Callback to handle the users request to clone an existing VM.
+     * This is almost exactly like createSnapshot, just with a subtle difference.
      */
     private static function cloneVM()
     {
