@@ -3,6 +3,7 @@
         "programster/cli-menu": "1.0.*",
         "iRAP/core-libs": "1.1.*",
         "iRAP/autoloader": "1.0",
-        "irap/migrations": "^1.0"
+        "irap/migrations": "^1.0",
+        "irap/mysql-objects": "^3.2"
     }
 }
