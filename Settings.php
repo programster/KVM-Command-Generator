@@ -8,7 +8,8 @@
 define('ISOS_DIR', __DIR__ . '/installation_media');
 
 # Where we are going to store the guest VMs
-define('VM_DIR', __DIR__ . '/vms'); 
+#define('VM_DIR', __DIR__ . '/vms'); 
+define('VM_DIR', '/kvm/vms');
 
 # Define the path for the script we will write the command to install with.
 define('INSTALL_GUEST_SCRIPT', '/tmp/install-guest.sh'); 
