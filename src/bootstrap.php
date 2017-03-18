@@ -21,7 +21,7 @@ if (!file_exists(ISOS_DIR))
     \iRAP\CoreLibs\Filesystem::mkdir(ISOS_DIR);
 }
 
-if (!file_exists(VM_DIR))
+if (!file_exists(KVM_DIR))
 {
-    \iRAP\CoreLibs\Filesystem::mkdir(VM_DIR);
+    \iRAP\CoreLibs\Filesystem::mkdir(KVM_DIR);
 }
