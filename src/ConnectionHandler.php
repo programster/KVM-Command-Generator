@@ -17,7 +17,7 @@ class ConnectionHandler
     }
     
     
-    public static function get_instance()
+    public static function getInstance()
     {
         if (self::$s_instance == null)
         {
@@ -33,10 +33,10 @@ class ConnectionHandler
      * @param connectionName - the string name of the connection that we want to get.
      * @return connection - the mysqli connection object.
      */
-    public static function get_connection()
+    public static function getConnection()
     {
         /* @var $instance ConnectionHandler */
-        $instance = self::get_instance();
+        $instance = self::getInstance();
         
         if ($instance->m_connection == null)
         {
@@ -61,51 +61,17 @@ class ConnectionHandler
     
     
     /**
-     * Escapes a string specifically for the specified connection / database.
-     * 
-     * @param unescapedString - the string to prepare for database insertion
-     * @param connectionName - the name of the connection/database that wish to insert into.
-     * 
-     * @return escapedString - the unescaped string in its newly escaped form.
-     */
-    public static function escapeString($unescapedString, $connectionName)
-    {
-        $connection = self::get_connection($connectionName);
-        $escapedString = mysqli_real_escape_string($connection, $unescapedString);
-        return $escapedString;
-    }
-    
-    
-    /**
      * Closes off a single connection by name.
      * @param connectionName - the name of the connection we wish to close off.
      * @return void - closes connections in this classes member variables.
      */
-    public static function close_connection($connectionName)
+    public static function close($connectionName)
     {
-        $instance = self::get_instance();
+        $instance = self::getInstance();
         
         if (isset($instance->m_connection[$connectionName]))
         {
             $instance->m_connection[$connectionName]->close();
-            unset($instance->m_connection[$connectionName]);
-        }
-    }
-    
-    
-    /**
-     * Handles the closing of all connections that this class has open. This should be called instead 
-     * of using mysql_close anywhere.
-     * @param void
-     * @return void - closes connections in this classes member variables.
-     */
-    public static function close_connections()
-    {
-        $instance = self::get_instance();
-        
-        foreach ($instance->m_connection as $connectionName => $connection)
-        {
-            $connection->close();
             unset($instance->m_connection[$connectionName]);
         }
     }

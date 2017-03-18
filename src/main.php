@@ -9,6 +9,10 @@
 
 require_once(__DIR__ . '/bootstrap.php');
 
+// Run migrations
+$db = ConnectionHandler::getConnection();
+$migrationManager = new iRAP\Migrations\MigrationManager(__DIR__ . '/migrations', $db);
+$migrationManager->migrate();
 
 class App
 {
@@ -90,7 +94,7 @@ class App
             'bash ' . __DIR__ . '/create-external-snapshot.sh' .
             ' "' . $vmName . '"' . 
             ' "' . $snapshotName . '"' . 
-            ' "' . VM_DIR . '"';
+            ' "' . KVM_DIR . '"';
         
         shell_exec($cmd);
     }
@@ -130,7 +134,7 @@ class App
      */
     private static function getChosenVmFromUser()
     {
-        $vms = \iRAP\CoreLibs\Filesystem::getDirectories(VM_DIR, false, false);
+        $vms = \iRAP\CoreLibs\Filesystem::getDirectories(KVM_DIR, false, false);
         $vmsMenu = new Programster\CliMenu\ValueMenu("Which VM?");
         
         foreach ($vms as $vm)
