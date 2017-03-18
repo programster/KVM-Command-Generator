@@ -94,6 +94,16 @@ class VirtualMachine
         # Temporary hack. Set to 777 so Virt manager definitely has access to the disk.
         shell_exec("chmod 777 " . $this->m_configuredDisk->getFilepath());
         
+        # Create the disk and guest db objects
+        $disk = new Disk(array('path' => $this->m_configuredDisk->getFilepath()));
+        $disk->save();
+        
+        $guest = new Guest(array('name' => $this->m_name));
+        $guest->save();
+        
+        $guestDisk = new GuestDisk(array('guest_id' => $guest->get_id(), 'disk_id' => $disk->get_id()));
+        $guestDisk->save();
+        
         if (DEBUG)
         {
             print PHP_EOL;

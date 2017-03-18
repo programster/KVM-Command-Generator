@@ -33,7 +33,13 @@ class ConfiguredDisk
         $formatMenu->addOption("Raw", "raw");
         $this->m_diskFormat = $formatMenu->run();
         
-        $this->m_filepath = KVM_DIR . '/' . $vmName . '/disk.' . $this->m_diskFormat;
+        $randString = iRAP\CoreLibs\StringLib::generateRandomString(
+            10, 
+            iRAP\CoreLibs\StringLib::PASSWORD_DISABLE_SPECIAL_CHARS
+        );
+        
+        $diskName = time() . '_' . $randString . "." . $this->m_diskFormat;
+        $this->m_filepath = KVM_DIR . '/disk/' . $diskName;
         
         // For more info on the types:
         // https://www.ibm.com/support/knowledgecenter/linuxonibm/liaat/liaatbpkvmguestcache.htm
