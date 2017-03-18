@@ -1,0 +1,22 @@
+<?php
+
+/* 
+ * Fill in/change the settings below according to your needs before removing the .tmpl extension
+ * from this file.
+ */
+
+# Database details.
+define('DB_HOST', 'localhost');
+define('DB_USER', 'root');
+define('DB_PASSWORD', '');
+define('DB_NAME', 'kvm');
+
+# Where we are going to store the guest VMs
+#define('KVM_DIR', __DIR__ . '/vms'); 
+define('KVM_DIR', '/kvm');
+
+# Place to stick any distro ISO's for installing VMs from scratch with.
+define('ISOS_DIR', KVM_DIR . '/installation_media');
+
+# Developers can flip this to true in development to help with diagnosing problems
+define('DEBUG', false);
