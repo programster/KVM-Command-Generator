@@ -31,4 +31,8 @@ class Disk extends \iRAP\MysqlObjects\AbstractTableRowObject
     {
         return DiskTable::getInstance();
     }
+    
+    
+    # Accessors
+    public function get_path() { return $this->m_path; }
 }
