@@ -103,7 +103,7 @@ class App
                 
         # Create new overlay image that will point back to the snapshot disk
         $createDiskCommand = 
-            'sudo qemu-img create -f qcow2' .
+            'qemu-img create -f qcow2' .
             ' -b ' . $backingDisk->get_path() .
             ' ' . $newGuestDiskPath;
         
@@ -142,7 +142,7 @@ class App
         
         # Generate a new xml file for the guest.
         # This takes care of changing the MAC address for us.
-        $xmlPlaceholderFile = tempnam();
+        $xmlPlaceholderFile = tempnam('/tmp', '');
         
         $cloneCommand = 
             'virt-clone' .
@@ -198,7 +198,7 @@ class App
     {
         $snapshotName = self::getInput("Snapshot name: ");
         
-        $stateCommand = 'virsh dominfo $DOMAIN | grep "State" | cut -d " " -f 11';
+        $stateCommand = 'virsh dominfo ' . $guest->get_name() . ' | grep "State" | cut -d " " -f 11';
         $state = shell_exec($stateCommand);
         
         $randString = iRAP\CoreLibs\StringLib::generateRandomString(10, iRAP\CoreLibs\StringLib::PASSWORD_DISABLE_SPECIAL_CHARS);
@@ -213,7 +213,7 @@ class App
             
             $snapshotCommand = 
                 'virsh snapshot-create-as' .
-                ' --domain ' . $vmName . ' ' . $snapshotName .
+                ' --domain ' . $guest->get_name() . ' ' . $snapshotName .
                 ' --diskspec vda,file=' . $newDiskFilepath . ',snapshot=external' .
                 ' --memspec file=' . $newMemFilepath . ',snapshot=external' .
                 ' --atomic';
@@ -225,7 +225,7 @@ class App
             
             $snapshotCommand = 
                 'virsh snapshot-create-as' .
-                ' --domain ' . $vmName . ' ' . $snapshotName  .
+                ' --domain ' . $guest->get_name() . ' ' . $snapshotName  .
                 ' --diskspec vda,file=' . $newDiskFilepath . ',snapshot=external' .
                 ' --disk-only' .
                 ' --atomic';
