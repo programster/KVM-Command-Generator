@@ -90,6 +90,8 @@ class App
     private function createGuestFromSnapshot(Snapshot $snapshot)
     {
         $guestName = self::getInput("Guest name: ");
+        
+        /* @var $backingDisk Disk */
         $backingDisk = DiskTable::getInstance()->load($snapshot->get_disk_id());
         
         $randString = iRAP\CoreLibs\StringLib::generateRandomString(
@@ -100,9 +102,12 @@ class App
         $newGuestDiskPath = KVM_DIR . '/' . time() . '_' . $randString . '.qcow2';
                 
         # Create new overlay image that will point back to the snapshot disk
-        'sudo qemu-img create -f qcow2' .
-        ' -b ' . $backingDisk .
-        ' ' . $newGuestDiskPath;
+        $createDiskCommand = 
+            'sudo qemu-img create -f qcow2' .
+            ' -b ' . $backingDisk->get_path() .
+            ' ' . $newGuestDiskPath;
+        
+        shell_exec($createDiskCommand);
         
         /* @var $baseGuest Guest */
         $baseGuest = GuestTable::getInstance()->load($snapshot->get_guest_id());
@@ -148,7 +153,6 @@ class App
             ' --print-xml > ' . $xmlPlaceholderFile;
         
         shell_exec($cloneCommand);
-        
         shell_exec("virsh define $xmlPlaceholderFile");
         shell_exec("rm $xmlPlaceholderFile");
     }
