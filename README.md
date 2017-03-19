@@ -14,15 +14,17 @@ sudo apt-get install php7.0-cli -y
 
 ## Features
 * Easy Guest Installation 
-	* To set up a fresh guest from scratch, you just choose the option to deploy a guest, answer a bunch of multiple choice questions, and then let the tool do its job, automatically installing and configuring the guest for you. 
-
+	* To set up a guest from scratch, simply choose the option to deploy a guest from the menu, and then select the appropriate options for configuring your guest from a series of multiple choice questions. The tool will then installing and configuring the guest for you. 
+* Instant snapshots  - This tool uses external snapshots so that snapshots are instant.
+* Efficient Disk Utilization with thinly provisioned guest clones.
+* Instant cloning through thin provisioning.
 * Easy Customization
 	* Add your own distros to install as guests by editing the `distros.json` file. 
 	* Change where all the virtual machines are kept by editing the `Settings.php` file. 
 
 
 ## Default Accounts
-Below are the default login details for guests installed using the default kickstart scripts.
+When you create a guest from scratch they will come with the following default login credentials:
 
 * **Debian**
     * Username: root
@@ -33,7 +35,7 @@ Below are the default login details for guests installed using the default kicks
 * **CentOS 6**
     * Username: root
     * Password: centos
-* **CentOS 7 (recommend 1024+ MB RAM for installation)
+* **CentOS 7** (recommend 1024+ MB RAM for installation)
     * Username: admin
     * Password: changeme123
     * Root Password: centos
@@ -45,8 +47,6 @@ The debian 8.1 guest image has an issue related to systemd, in which you will no
 Ubuntu 16.04 guests have an issue when connecting to the console. [Refer here to fix](http://unix.stackexchange.com/questions/288344/accessing-console-of-ubuntu-16-04-kvm-guest).
 
 ## Features In Development
-* Snapshot Management (internal and external).
-* Basic Cloning (using virt-clone which copies the disk, gives a new name and mac)
-* Rapid Thin Provision Cloning (using external snapshots for instant cloning and storage savings.)
+* Web interface and Remote management - use this tool on one server to control as many remote KVM hosts as you want.
 * Guest renaming (automatically working around issues with renaming guests that have snapshots)
 * Guest deletion (automatically working around issues with renaming guests that have snapshots)
