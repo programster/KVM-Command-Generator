@@ -12,6 +12,10 @@ This CLI based application aims to simplify using KVM on a single **Ubuntu 16.04
 sudo apt-get install php7.0-cli -y
 ```
 
+## Setup
+* To resolve some issues with starting cloned guests, [configure libvirt to run as root](https://github.com/jedi4ever/veewee/issues/996) by editing the `/etc/libvirt/qemu.conf` file and ucommenting the `user = "root"` and `group = "root"` lines.
+* run the `main.php` script either as root (not with sudo), or a user that has been added to the `kvm` group (`sudo adduser $USER kvm`)
+
 ## Features
 * Easy Guest Installation 
 	* To set up a guest from scratch, simply choose the option to deploy a guest from the menu, and then select the appropriate options for configuring your guest from a series of multiple choice questions. The tool will then installing and configuring the guest for you. 
