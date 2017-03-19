@@ -39,7 +39,7 @@ class ConfiguredDisk
         );
         
         $diskName = time() . '_' . $randString . "." . $this->m_diskFormat;
-        $this->m_filepath = KVM_DIR . '/disk/' . $diskName;
+        $this->m_filepath = KVM_DIR . '/' . $diskName;
         
         // For more info on the types:
         // https://www.ibm.com/support/knowledgecenter/linuxonibm/liaat/liaatbpkvmguestcache.htm
