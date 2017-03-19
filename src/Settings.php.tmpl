@@ -17,5 +17,9 @@ define('KVM_DIR', '/kvm');
 # Place to stick any distro ISO's for installing VMs from scratch with.
 define('ISOS_DIR', KVM_DIR . '/installation_media');
 
+# Define whether we are using a bridge on the host for the guests, and if so what is its name.
+define('USE_BRIDGE', true);
+define('BRIDGE_NAME', "kvmbr0");
+
 # Developers can flip this to true in development to help with diagnosing problems
 define('DEBUG', false);

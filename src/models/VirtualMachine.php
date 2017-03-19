@@ -129,15 +129,22 @@ class VirtualMachine
     {
         $switches = array(
             '--connect qemu:///system ',
-            #'--noautoconsole',
-            #'--vnc', # you cannot have nographics on if this is and vice-versa
             '--nographics',
             '--os-type linux',
             '--accelerate',
             '--hvm', # kvm does not have paravirt, thats xen only.
-            #'--network network=bridge:kvmbr0,model=virtio', # commenting this out results in using kvms default 192.168.122.1 virbr0 and VM's will not have public IPs
-            '--network network=default,model=virtio'
         );
+        
+        if (USE_NETWORK_BRIDGE)
+        {
+            $switches['NETWORK'] = '--network bridge=' . BRIDGE_NAME . ',model=virtio';
+        }
+        else
+        {
+            # No bridge being used. Guests will use KVM's default 192.168.122.1 virbr0 and VM's 
+            # will not have public IPs
+            $switches['NETWORK'] = '--network network=default,model=virtio';
+        }
         
         $switches['NAME'] = '--name ' . $this->m_name;
         $switches['DISTRO'] = '--os-variant ' . $this->m_distro->getOsVariant();
