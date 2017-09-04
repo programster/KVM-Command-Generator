@@ -6,11 +6,11 @@ Simple CLI script to help witht he installation/deployment of KVM guests on Ubun
 
 ## Default Accounts
 Below are the default login details for guests installed using the default kickstart scripts.
-### Debian
+### Debian 8
 * Username: root
 * Password: root
 
-### Ubuntu
+### Ubuntu 14.04 & 16.04
 * Username: ubuntu
 * Password: ubuntu
 
