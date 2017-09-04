@@ -49,7 +49,7 @@ $distros = array(
        'Debian 9', 
        'debian8', # stretch not yet listed in os variants yet
        'http://ftp.us.debian.org/debian/dists/stretch/main/installer-amd64/',
-       'http://pastebin.com/raw.php?i=3NmQCK42',
+       'http://pastebin.com/raw/nFEkfBJA',
        "url",
        "auto=true text hostname=debian domain=debian"
     ),
