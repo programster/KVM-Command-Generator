@@ -23,11 +23,10 @@ Simple CLI script to help witht he installation/deployment of KVM guests on Ubun
 * Execute the tool: `php main.php`
 
 
-### Ubuntu 16.04
-
 
 ## Default Accounts
-Below are the default login details for guests installed using the default kickstart scripts.
+The information below contains the default login details for the guests created using this tool with the default kickstart scripts. I would recommend creating one of each type of guest you want, before tweaking it with the login details/setup you want, and then just cloning that guest in future in order to create more guests. This is much faster and more convenient.
+
 ### Debian 8
 * Username: root
 * Password: root
