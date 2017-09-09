@@ -17,7 +17,7 @@ Simple CLI script to help witht he installation/deployment of KVM guests on Ubun
 ### Ubuntu 16.04
 * [Turn your Ubuntu 16.04 server into a KVM host](http://blog.programster.org/set-up-ubuntu-16-04-KVM-server) if you haven't already.
 * Install the PHP CLI with: `sudo apt-get install php7.0-cli`
-* Go to the [releases page](https://github.com/programster/KVM-Command-Generator/releases) and download the latest one for Debian 9.
+* Go to the [releases page](https://github.com/programster/KVM-Command-Generator/releases) and download the latest one for Ubuntu 16.04.
 * Extract the tar.gz file. `tar --extract --gzip --file [filename]`
 * Navigate within the extracted folder: `cd KVM-Command-Generator`
 * Execute the tool: `php main.php`
