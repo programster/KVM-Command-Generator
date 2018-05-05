@@ -144,16 +144,17 @@ function configureDisk($switches, $vmName)
 {
     global $settings;
     
-    $yesNoOptions = array('yes', 'no');
-    
     # DISK PARAMS
-    $filepath = $settings['INSTALLATION_DIR'] . '/' . $vmName . '.img';
-    
-    
+    $filepath = $settings['INSTALLATION_DIR'] . "/{$vmName}/{$vmName}.qcow2";
+    mkdir($settings['INSTALLATION_DIR'] . "/{$vmName}");
     $diskSize = getInput("How much allocated storage (in GB)?");
     
     $answers = array("y", "n");
-    $answer = getInput("Is the VM's disk file going to be stored on a remote server's NFS?", $answers);
+    
+    $answer = getInput(
+        "Is the VM's disk file going to be stored on a remote server's NFS?", 
+        $answers
+    );
     
     switch ($answer)
     {
