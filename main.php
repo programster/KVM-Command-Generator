@@ -19,14 +19,14 @@ $distros = array(
        'Ubuntu 18.04', 
        "",
        'http://us.archive.ubuntu.com/ubuntu/dists/bionic/main/installer-amd64/',
-       'http://pastebin.com/raw/Q3Yq6EyQ', # no swap, no lvm, installs openssh-server
+       'http://pastebin.com/raw/WxQygWpm', # no swap, no lvm, installs openssh-server
        'ks'
     ),
     new Distro(
        'Ubuntu 16.04', 
        'ubuntu16.04', # xenial not listed in options
        'http://us.archive.ubuntu.com/ubuntu/dists/xenial/main/installer-amd64/',
-       'http://pastebin.com/raw/Q3Yq6EyQ', # no swap, no lvm, installs openssh-server
+       'http://pastebin.com/raw/WxQygWpm', # no swap, no lvm, installs openssh-server
        'ks'
     ),
     new Distro(
