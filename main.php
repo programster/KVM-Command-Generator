@@ -16,6 +16,13 @@ $distros = array(
     # we use pastebin links rather than linking to github raw because for some reason github raw
     # will fail to download.
     new Distro(
+       'Ubuntu 18.04', 
+       "",
+       'http://us.archive.ubuntu.com/ubuntu/dists/bionic/main/installer-amd64/',
+       'http://pastebin.com/raw/Q3Yq6EyQ', # no swap, no lvm, installs openssh-server
+       'ks'
+    ),
+    new Distro(
        'Ubuntu 16.04', 
        'ubuntu16.04', # xenial not listed in options
        'http://us.archive.ubuntu.com/ubuntu/dists/xenial/main/installer-amd64/',
@@ -210,8 +217,10 @@ function configureDistro($switches)
     /* @var $chosenDistro Distro */
     $chosenDistro = $distros[$distroIndex];
     
-    
-    $switches['DISTRO'] = '--os-variant ' . $chosenDistro->getOsVariant();
+    if ($chosenDistro->getOsVariant() !== "")
+    {
+        $switches['DISTRO'] = '--os-variant ' . $chosenDistro->getOsVariant();
+    }
     
     $revLocation = strtolower(strrev($chosenDistro->getLocation()));
     
@@ -258,7 +267,7 @@ function configureDistro($switches)
             $chosenDistro->getKickstartArgKeyword() . '=' . $kickstartFile . 
             $extraDistroSpecificArgs .
         '"';
-
+    
     return $switches;
 }
 
