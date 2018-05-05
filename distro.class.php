@@ -16,13 +16,14 @@ class Distro
     private $m_extraArgs;
     private $m_kickstartArgKeyword;
 
-    public function __construct($name, 
-                                $osVariant, 
-                                $location, 
-                                $kickstartLoc, 
-                                $kickstartArgKeyword, 
-                                $extraArgs="")
-    {
+    public function __construct(
+        $name, 
+        $osVariant, 
+        $location, 
+        $kickstartLoc, 
+        $kickstartArgKeyword, 
+        $extraArgs=""
+    ){
         $this->m_name                = $name;
         $this->m_osVariant           = $osVariant;
         $this->m_location            = $location;
@@ -31,6 +32,8 @@ class Distro
         $this->m_extraArgs           = $extraArgs;
     }
     
+    
+    # Accessors
     public function getName()                { return $this->m_name; }
     public function getOsVariant()           { return $this->m_osVariant; }
     public function getLocation()            { return $this->m_location; }
