@@ -7,7 +7,7 @@
  * http://arstechnica.com/civis/viewtopic.php?f=16&t=1165804
  */
 
-require_once(__DIR__ . '/distro.class.php');
+require_once(__DIR__ . '/Distro.php');
 
 global $settings;
 
@@ -56,6 +56,14 @@ $distros = array(
        'Debian 9', 
        'debian8', # stretch not yet listed in os variants yet
        'http://ftp.us.debian.org/debian/dists/stretch/main/installer-amd64/',
+       'http://pastebin.com/raw/nFEkfBJA',
+       "url",
+       "auto=true text hostname=debian domain=debian"
+    ),
+    new Distro(
+       'Debian 10',
+       'debian10',
+       'http://ftp.us.debian.org/debian/dists/buster/main/installer-amd64/',
        'http://pastebin.com/raw/nFEkfBJA',
        "url",
        "auto=true text hostname=debian domain=debian"
