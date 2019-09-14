@@ -7,7 +7,7 @@
  * http://arstechnica.com/civis/viewtopic.php?f=16&t=1165804
  */
 
-require_once(__DIR__ . '/distro.class.php');
+require_once(__DIR__ . '/Distro.php');
 
 global $settings;
 
