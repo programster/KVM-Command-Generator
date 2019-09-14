@@ -198,7 +198,7 @@ function configureDistro($switches)
     $distros = $settings['DISTROS'];
     
     # DISK PARAMS
-    $filepath = $settings['INSTALLATION_DIR'] . '/' . $vmName . '.img';
+    $filepath = $settings['INSTALLATION_DIR'] . '/' . $settings['NAME'] . '.img';
     
     $distroIndex = -1;
     
