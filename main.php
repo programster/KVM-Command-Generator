@@ -61,6 +61,14 @@ $distros = array(
        "auto=true text hostname=debian domain=debian"
     ),
     new Distro(
+       'Debian 10',
+       'debian10',
+       'http://ftp.us.debian.org/debian/dists/buster/main/installer-amd64/',
+       'http://pastebin.com/raw/nFEkfBJA',
+       "url",
+       "auto=true text hostname=debian domain=debian"
+    ),
+    new Distro(
        'CentOS 6', 
        'centos6.5', 
        'ftp://ftp.mirrorservice.org/sites/mirror.centos.org/6/os/x86_64/',
