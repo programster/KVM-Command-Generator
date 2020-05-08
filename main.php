@@ -16,6 +16,13 @@ $distros = array(
     # we use pastebin links rather than linking to github raw because for some reason github raw
     # will fail to download.
     new Distro(
+       'Ubuntu 20.04', 
+       "",
+       'http://us.archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/',
+       'http://pastebin.com/raw/WxQygWpm', # no swap, no lvm, installs openssh-server
+       'ks'
+    ),
+    new Distro(
        'Ubuntu 18.04', 
        "",
        'http://us.archive.ubuntu.com/ubuntu/dists/bionic/main/installer-amd64/',

@@ -16,6 +16,7 @@ class Distro
     private $m_extraArgs;
     private $m_kickstartArgKeyword;
 
+    
     public function __construct(
         $name, 
         $osVariant, 
