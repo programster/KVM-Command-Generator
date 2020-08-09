@@ -19,7 +19,7 @@ $distros = array(
        'Ubuntu 18.04', 
        "",
        'http://us.archive.ubuntu.com/ubuntu/dists/bionic/main/installer-amd64/',
-       'http://pastebin.com/raw/WxQygWpm', # no swap, no lvm, installs openssh-server
+       'http://files.programster.org/kvm-kickstart-files/ubuntu-18-04.txt', # no swap, no lvm, installs openssh-server
        'ks'
     ),
     new Distro(
